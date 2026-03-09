@@ -1,60 +1,81 @@
-import { useState } from "react";
-import Header from "./Components/Header";
-import FilterBar from "./Components/Filter";
-import Gallery from "./Components/Gallery";
-import Lightbox from "./Components/LightBox";
-import { designs } from "./data/designs";
-import type { DesignItem } from "./types";
-import { useFavourites } from "./hooks/useFavourite";
-import { useDownloaded } from "./hooks/useDownloaded";
+import { Routes, Route } from "react-router-dom";
+import { Header } from "./Components/layout/Header";
+import { Footer } from "./Components/layout/Footer";
+import { Home } from "./pages/Home";
+import { Projects } from "./pages/Projects";
+import { ProjectPage } from "./pages/ProjectPage";
+import { CategoryPage } from "./pages/CategoryPage";
+import { Favourites } from "./pages/Favourites";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Categories } from "./pages/Categories";
 
 export default function App() {
-  
-  const {  toggleFavourite, isFavourite } = useFavourites();
-  const { downloaded, markDownloaded, isDownloaded } = useDownloaded();
-  const categories = ["all", "flyer", "poster", "branding", "others", "favourites ❤️"];
-  const [active, setActive] = useState("all");
-  const [selected, setSelected] = useState<DesignItem | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const filtered = active === "favourites ❤️"
-  ? designs.filter((d) => isFavourite(d.id))
-  : active === "all"
-  ? designs
-  : designs.filter((d) => d.category === active);
-
   return (
-    <div className="bg-gradient-to-br from-purple-500 via-purple-400 to-hotOrange">
+    <div style={{ minHeight: "100vh", background: "#f5f0ea", display: "flex", flexDirection: "column" }}>
       <Header />
-      <div className="max-w-6xl mx-auto px-4 py-10">
-        <FilterBar
-          categories={categories}
-          active={active}
-          onChange={setActive}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
-        <Gallery items={filtered} onSelect={setSelected} searchQuery={searchQuery}
-        toggleFavourite={toggleFavourite} isFavourite={isFavourite}
-        downloaded={downloaded} isDownloaded={isDownloaded} markDownloaded={markDownloaded} />
-      </div>
-
-      {selected && (
-        <Lightbox
-          isFavourite={isFavourite(selected.id)}
-          onFavourite={() => toggleFavourite(selected.id)}
-          selected={selected}
-          image={selected.image}
-          title={selected.title}
-          description={selected.description}
-          category={selected.category}
-          onClose={() => setSelected(null)}
-          markDownloaded={markDownloaded}
-        />
-      )}
-      <ToastContainer position="top-right" autoClose={2000} hideProgressBar />
+      <main style={{ flex: 1 }}>
+        <Routes>
+          <Route path="/"                        element={<Home />} />
+          <Route path="/projects"                element={<Projects />} />
+          <Route path="/projects/:slug"          element={<ProjectPage />} />
+          <Route path="/categories"    element={<Categories />} />
+          <Route path="/categories/:category"    element={<CategoryPage />} />
+          <Route path="/favourites"              element={<Favourites />} />
+        </Routes>
+      </main>
+      <Footer />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar
+        closeButton={false}
+        toastStyle={{
+          fontFamily: "'DM Mono', monospace",
+          fontSize: "0.65rem",
+          letterSpacing: "0.08em",
+          background: "#0a0908",
+          color: "#f5f0ea",
+          borderRadius: 0,
+          boxShadow: "none",
+          border: "1px solid rgba(245,240,234,0.1)",
+          minHeight: "auto",
+          padding: "0.65rem 1rem",
+        }}
+      />
     </div>
   );
 }
 
+/*import { Routes, Route } from "react-router-dom";
+import  {Header}  from "./Components/layout/Header";
+import  {Footer}  from "./Components/layout/Footer";
+import { Home } from "./pages/Home";
+import { Projects } from "./pages/Projects";
+import { ProjectPage } from "./pages/ProjectPage";
+import { CategoryPage } from "./pages/CategoryPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+export default function App() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-500 to-hotOrange flex flex-col">
+      <Header />
+
+      {/* Main content with flexible growth *
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:slug" element={<ProjectPage />} />
+          <Route path="/categories/:category" element={<CategoryPage />} />
+        </Routes>
+      </main>
+
+      <Footer />
+
+      <ToastContainer position="top-right" autoClose={2000} hideProgressBar />
+    </div>
+  );
+}
+*/

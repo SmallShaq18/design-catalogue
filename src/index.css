@@ -1,8 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Mono:wght@300;400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  @apply bg-[#d39fef] text-white scroll-smooth;
-  font-family: 'Inter', sans-serif;
+  background: #f5f0ea;
+  color: #0a0908;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f0ea;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(10, 9, 8, 0.18);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(10, 9, 8, 0.35);
+}
+
+/* ─── Selection ─────────────────────────────────────────────────────────── */
+
+::selection {
+  background: #0a0908;
+  color: #f5f0ea;
+}
+
+/* ─── Typography scale ───────────────────────────────────────────────────── */
+
+.display-xl {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(4rem, 14vw, 12rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: #0a0908;
+}
+
+.display-lg {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(3rem, 10vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: #0a0908;
+}
+
+.display-md {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: #0a0908;
+}
+
+.display-italic {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: rgba(10, 9, 8, 0.55);
+}
+
+.mono-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(10, 9, 8, 0.35);
+}
+
+.mono-body {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: rgba(10, 9, 8, 0.7);
+}
+
+/* ─── Hairline rules ─────────────────────────────────────────────────────── */
+
+.rule {
+  height: 1px;
+  background: rgba(10, 9, 8, 0.1);
+  border: none;
+}
+
+.rule-dark {
+  height: 1px;
+  background: rgba(10, 9, 8, 0.35);
+  border: none;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #f5f0ea;
+  background: #0a0908;
+  border: 1px solid #0a0908;
+  padding: 0.65rem 1.25rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.75;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #0a0908;
+  background: transparent;
+  border: 1px solid rgba(10, 9, 8, 0.25);
+  padding: 0.65rem 1.25rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-outline:hover {
+  border-color: rgba(10, 9, 8, 0.6);
+}
+
+/* ─── Image utilities ────────────────────────────────────────────────────── */
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ─── Reveal animations ──────────────────────────────────────────────────── */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes image-reveal {
+  0%   { clip-path: inset(0 100% 0 0); opacity: 0; }
+  1%   { opacity: 1; }
+  100% { clip-path: inset(0); opacity: 1; }
+}
+
+@keyframes lb-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease both;
+}
+
+.animate-image-reveal {
+  animation: image-reveal 0.8s ease-out forwards;
+}
+
+.animate-marquee {
+  animation: marquee 22s linear infinite;
+}
+
+/* ─── Toast overrides ────────────────────────────────────────────────────── */
+
+.Toastify__toast {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.Toastify__toast-container {
+  width: auto !important;
+  min-width: 220px;
+}
+
+/* ─── Focus visible ──────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 1.5px solid rgba(10, 9, 8, 0.5);
+  outline-offset: 3px;
 }
