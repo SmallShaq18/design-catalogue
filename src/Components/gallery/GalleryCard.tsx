@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, Download, Loader } from "lucide-react";
-//import { ProjectShare } from "./ProjectShare";
+//import { ProjectShare } from "../ShareButton";
 import { ProjectShare } from "../ShareButton"
 import { downloadImage } from "../../utils/donwload";
 import { useFavourites } from "../../hooks/useFavourite";
@@ -11,7 +11,6 @@ import type { DesignProject } from "../../types/DesignProject";
 
 interface Props {
   project: DesignProject;
-  // These can still be passed in (e.g. from GalleryGrid) or the card reads hooks directly
   isFavourite?: boolean;
   onToggleFavourite?: () => void;
   isDownloaded?: boolean;
@@ -25,10 +24,9 @@ export const GalleryCard = ({
   isDownloaded: dlProp,
   onMarkDownloaded: markDlProp,
 }: Props) => {
-  const [hovered, setHovered]         = useState(false);
+  const [imgHovered, setImgHovered]   = useState(false);
   const [downloading, setDownloading] = useState(false);
 
-  // Fall back to own hooks if props not provided (e.g. standalone usage)
   const { isFavourite: hookFav, toggle: hookToggle } = useFavourites();
   const { isDownloaded: hookDl, markDownloaded: hookMark } = useDownloads();
 
@@ -52,86 +50,112 @@ export const GalleryCard = ({
   };
 
   return (
-    <div
-      style={{ position: "relative", display: "block", background: "rgba(10,9,8,0.05)" }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <Link to={`/projects/${project.slug}`} style={{ display: "block", textDecoration: "none" }}>
+    <div style={{ background: "#f5f0ea", display: "flex", flexDirection: "column" }}>
+
+      {/* ── Image ──────────────────────────────────────────────── */}
+      <Link
+        to={`/projects/${project.slug}`}
+        style={{ display: "block", textDecoration: "none", overflow: "hidden", flexShrink: 0 }}
+        onMouseEnter={() => setImgHovered(true)}
+        onMouseLeave={() => setImgHovered(false)}
+      >
         <img
-          src={project.coverImage} alt={project.title} loading="lazy"
+          src={project.coverImage}
+          alt={project.title}
+          loading="lazy"
           style={{
             width: "100%", height: "auto", display: "block",
-            transform: hovered ? "scale(1.04)" : "scale(1)",
-            filter: hovered ? "brightness(0.68)" : "brightness(1)",
-            transition: "transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.45s ease",
+            transform: imgHovered ? "scale(1.04)" : "scale(1)",
+            transition: "transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94)",
           }}
         />
-        {/* Hover caption */}
-        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column",
-          justifyContent: "flex-end", padding: "1.1rem",
-          opacity: hovered ? 1 : 0, transition: "opacity 0.3s ease", pointerEvents: "none" }}>
-          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.5rem", letterSpacing: "0.2em",
-            textTransform: "uppercase" as const, color: "rgba(245,240,234,0.5)", display: "block",
-            marginBottom: "0.25rem", transform: hovered ? "translateY(0)" : "translateY(8px)",
-            transition: "transform 0.35s ease" }}>{project.category}</span>
-          <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: "italic",
-            fontSize: "0.95rem", color: "#f5f0ea", display: "block",
-            transform: hovered ? "translateY(0)" : "translateY(8px)", transition: "transform 0.35s ease 0.04s" }}>
-            {project.title}
-          </span>
-          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.5rem", letterSpacing: "0.15em",
-            color: "rgba(245,240,234,0.4)", marginTop: "0.4rem", display: "inline-block",
-            borderBottom: "1px solid rgba(245,240,234,0.3)", paddingBottom: "1px",
-            transform: hovered ? "translateY(0)" : "translateY(8px)", transition: "transform 0.35s ease 0.07s" }}>
-            View project →
-          </span>
-        </div>
       </Link>
 
-      {/* Actions */}
-      <div style={{ position: "absolute", top: "0.65rem", right: "0.65rem", display: "flex",
-        gap: "0.3rem", opacity: hovered ? 1 : 0, transition: "opacity 0.3s ease", zIndex: 2 }}>
-        <ActionBtn
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFav(); }}
-          title={isFav ? "Remove from favourites" : "Save to favourites"}
-        >
-          <Heart size={13} style={{ fill: isFav ? "#ef4444" : "none", color: isFav ? "#ef4444" : "#f5f0ea",
-            transition: "fill 0.2s, color 0.2s" }} />
-        </ActionBtn>
+      {/* ── Always-visible info bar ─────────────────────────────── */}
+      <div style={{
+        padding: "0.6rem 0.1rem 0.5rem",
+        display: "flex", alignItems: "flex-start", justifyContent: "space-between",
+        gap: "0.5rem",
+      }}>
+        {/* Text */}
+        <Link to={`/projects/${project.slug}`} style={{ textDecoration: "none", flex: 1, minWidth: 0 }}>
+          <span style={{
+            fontFamily: "'DM Mono', monospace", fontSize: "0.5rem",
+            letterSpacing: "0.18em", textTransform: "uppercase" as const,
+            color: "rgba(10,9,8,0.35)", display: "block", marginBottom: "0.2rem",
+          }}>
+            {project.category}
+          </span>
+          <span style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: "italic",
+            fontSize: "0.95rem", color: "#0a0908", display: "block",
+            whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis",
+          }}>
+            {project.title}
+          </span>
+        </Link>
 
-        <ActionBtn onClick={handleDownload} title="Download image">
-          {downloading
-            ? <Loader size={13} color="#f5f0ea" style={{ animation: "spin 0.8s linear infinite" }} />
-            : <Download size={13} color="#f5f0ea" />}
-        </ActionBtn>
+        {/* Actions — always visible, compact */}
+        <div style={{ display: "flex", gap: "0.25rem", flexShrink: 0, alignItems: "center", paddingTop: "0.15rem" }}>
+          {/* Heart */}
+          <ActionBtn
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFav(); }}
+            title={isFav ? "Remove from favourites" : "Save to favourites"}
+            active={isFav}
+          >
+            <Heart
+              size={12}
+              style={{
+                fill: isFav ? "#ef4444" : "none",
+                color: isFav ? "#ef4444" : "rgba(10,9,8,0.4)",
+                transition: "fill 0.2s, color 0.2s",
+              }}
+            />
+          </ActionBtn>
 
-        <div style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
-          background: "rgba(10,9,8,0.65)", border: "1px solid rgba(245,240,234,0.15)", color: "#f5f0ea" }}>
-          <ProjectShare project={project} />
+          {/* Download */}
+          <ActionBtn onClick={handleDownload} title="Download image">
+            {downloading
+              ? <Loader size={12} color="rgba(10,9,8,0.4)" style={{ animation: "spin 0.8s linear infinite" }} />
+              : <Download size={12} color={isDl ? "#0a0908" : "rgba(10,9,8,0.4)"} />
+            }
+          </ActionBtn>
+
+          {/* Share */}
+          <ActionBtn onClick={(e) => e.preventDefault()} title="Share">
+            <ProjectShare project={project} iconSize={12} iconColor="rgba(10,9,8,0.4)" />
+          </ActionBtn>
         </div>
       </div>
-
-      {isDl && (
-        <div style={{ position: "absolute", bottom: "0.65rem", left: "0.65rem",
-          fontFamily: "'DM Mono', monospace", fontSize: "0.48rem", letterSpacing: "0.14em",
-          textTransform: "uppercase" as const, color: "#f5f0ea",
-          background: "rgba(10,9,8,0.7)", padding: "0.2rem 0.45rem", pointerEvents: "none" }}>
-          ✓ Downloaded
-        </div>
-      )}
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 };
 
-const ActionBtn = ({ onClick, title, children }: {
-  onClick: (e: React.MouseEvent) => void; title?: string; children: React.ReactNode;
+// ─── Action button ────────────────────────────────────────────────────────────
+const ActionBtn = ({
+  onClick, title, children, active,
+}: {
+  onClick: (e: React.MouseEvent) => void;
+  title?: string;
+  children: React.ReactNode;
+  active?: boolean;
 }) => (
-  <button onClick={onClick} title={title} style={{ width: 32, height: 32, display: "flex",
-    alignItems: "center", justifyContent: "center", background: "rgba(10,9,8,0.65)",
-    border: "1px solid rgba(245,240,234,0.15)", cursor: "pointer", padding: 0 }}>
+  <button
+    onClick={onClick}
+    title={title}
+    style={{
+      width: 28, height: 28,
+      display: "flex", alignItems: "center", justifyContent: "center",
+      background: active ? "rgba(10,9,8,0.06)" : "none",
+      border: "1px solid rgba(10,9,8,0.1)",
+      cursor: "pointer", padding: 0,
+      transition: "background 0.2s, border-color 0.2s",
+    }}
+    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "rgba(10,9,8,0.06)")}
+    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = active ? "rgba(10,9,8,0.06)" : "none")}
+  >
     {children}
   </button>
 );
