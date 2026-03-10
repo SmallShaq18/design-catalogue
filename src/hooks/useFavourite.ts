@@ -52,32 +52,3 @@ export function useFavourites() {
 
 // ─── also export the key + helpers for components that need raw access ────────
 export { LS_FAV, read as readFavourites, write as writeFavourites };
-
-
-/*import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-
-export function useFavourites() {
-  const [favourites, setFavourites] = useState<string[]>(() => {
-    const saved = localStorage.getItem("projectFavourites");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem("projectFavourites", JSON.stringify(favourites));
-  }, [favourites]);
-
-  const toggleFavourite = (id: string) => {
-    setFavourites((prev) =>
-      prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
-    );
-    const message = favourites.includes(id)
-      ? "Removed from favourites"
-      : "Added to favourites";
-    toast.info(message);
-  };
-
-  const isFavourite = (id: string) => favourites.includes(id);
-
-  return { favourites, toggleFavourite, isFavourite };
-}*/

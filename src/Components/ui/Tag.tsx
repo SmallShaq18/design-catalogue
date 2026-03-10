@@ -55,22 +55,3 @@ export const Tag = ({ label, variant = "default", active = false, onClick }: Tag
     </span>
   );
 };
-
-/*interface TagProps {
-  label: string;
-  variant?: "default" | "outline";
-}
-
-export const Tag = ({ label, variant = "default" }: TagProps) => {
-  return (
-    <span
-      className={`inline-block px-3 py-1 rounded-full text-xs font-semibold transition ${
-        variant === "outline"
-          ? "border border-white/40 text-white/80"
-          : "bg-white/20 text-white"
-      }`}
-    >
-      {label}
-    </span>
-  );
-};*/

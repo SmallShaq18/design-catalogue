@@ -38,22 +38,3 @@ export const Badge = ({ text, variant = "primary" }: BadgeProps) => {
     </span>
   );
 };
-
-/*interface BadgeProps {
-  text: string;
-  variant?: "primary" | "secondary" | "success";
-}
-
-export const Badge = ({ text, variant = "primary" }: BadgeProps) => {
-  const variantStyles = {
-    primary: "bg-gradient-to-r from-hotOrange to-neonPink text-white",
-    secondary: "bg-white/20 text-white",
-    success: "bg-green-500/50 text-green-100",
-  };
-
-  return (
-    <div className={`inline-block px-4 py-2 rounded-full text-sm font-bold ${variantStyles[variant]}`}>
-      {text}
-    </div>
-  );
-};*/

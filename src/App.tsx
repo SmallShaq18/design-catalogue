@@ -46,36 +46,3 @@ export default function App() {
     </div>
   );
 }
-
-/*import { Routes, Route } from "react-router-dom";
-import  {Header}  from "./Components/layout/Header";
-import  {Footer}  from "./Components/layout/Footer";
-import { Home } from "./pages/Home";
-import { Projects } from "./pages/Projects";
-import { ProjectPage } from "./pages/ProjectPage";
-import { CategoryPage } from "./pages/CategoryPage";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-export default function App() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-500 to-hotOrange flex flex-col">
-      <Header />
-
-      {/* Main content with flexible growth *
-      <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/:slug" element={<ProjectPage />} />
-          <Route path="/categories/:category" element={<CategoryPage />} />
-        </Routes>
-      </main>
-
-      <Footer />
-
-      <ToastContainer position="top-right" autoClose={2000} hideProgressBar />
-    </div>
-  );
-}
-*/
