@@ -191,7 +191,7 @@ const FavLink = ({ path, active, count, onClick }: {
 );
 
 const ContactBtn = ({ fullWidth }: { fullWidth?: boolean }) => (
-  <a href="mailto:shaqstudios@gmail.com" style={{
+  <a href="mailto:thesmallshaq@gmail.com" style={{
     fontFamily: "'DM Mono', monospace", fontSize: "0.6rem",
     letterSpacing: "0.18em", textTransform: "uppercase" as const,
     textDecoration: "none", color: "#f5f0ea", background: "#0a0908",
